@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find your CBSE Roll Number</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        .container,
+        .wrapper {
+            background-color: white;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        button {
+            padding: 0.7rem 0;
+            width: 200px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: solid 2px rgb(0, 37, 90);
+            background-color: rgb(0, 21, 63);
+            color: rgb(255, 255, 255);
+            box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.514);
+            cursor: pointer;
+        }
+
+        .wrapper {
+            overflow: hidden;
+            position: absolute;
+            height: 0;
+            transition: height 1s;
+            background-color: white;
+        }
+
+        .mainbox {
+            border: solid 2px black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.416);
+        }
+
+        .top,
+        .down {
+            width: 60vw;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background-color: black;
+            color: white;
+        }
+
+        .top b {
+            font-size: 1rem;
+        }
+
+        .down {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 70vh;
+        }
+
+        h5 {
+            width: 360px;
+            font-size: 1.2rem;
+            padding: 1rem 0;
+            font-weight: normal;
+            color: rgb(0, 40, 72);
+            text-decoration: underline;
+        }
+
+        input {
+            border: solid 2px grey;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            width: 360px;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            background-color: aliceblue;
+            outline: none;
+        }
+
+        input:focus {
+            box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.514);
+        }
+
+        p {
+            width: 360px;
+            padding: .25rem;
+            font-size: 1.1rem;
+            color: rgb(74, 74, 74);
+        }
+
+        span {
+            font-size: 0.8rem;
+            color: red;
+            font-weight: bolder;
+        }
+
+        .result {
+            display: grid;
+            grid-template-areas: 'hd hd hd hd'
+                'roll roll roll clr';
+            font-size: 1rem;
+            width: 360px;
+            margin: 1.5rem auto;
+            border: solid 2px grey;
+            border-radius: 5px;
+            box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.514);
+            background-color: azure;
+            color: black;
+            font-weight: 700;
+        }
+
+        #result_wrapper {
+            margin-top: 1rem auto;
+            visibility: hidden;
+            overflow: hidden;
+            width: 40vw;
+            transition: all 2s;
+            position: relative;
+        }
+
+        #result_wrapper #imgbox {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            width: 40vw;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #result_wrapper #imgbox img {
+            width: 100px;
+        }
+
+        #roll_number {
+            padding: 0.25rem 0.35rem;
+            grid-area: roll;
+            background-color: rgb(0, 21, 63);
+            border-radius: 5px;
+            color: white;
+            width: fit-content;
+            margin: 0.35rem auto;
+        }
+
+        .clear {
+            display: inline;
+            width: fit-content;
+            height: fit-content;
+            padding: 0.35rem;
+            margin: 0.35rem auto;
+            font-size: 1rem;
+            background-color: black;
+            color: white;
+            grid-area: clr;
+        }
+
+
+
+        @media screen and (max-width: 768px) {
+            html {
+                font-size: 12px;
+            }
+
+            button {
+                width: 150px;
+            }
+
+            .top,
+            .down {
+                width: 90vw;
+            }
+        }
+
+        .down {
+            height: 75vh;
+        }
+
+        h5,
+        input,
+        p,
+        .result {
+            width: 250px;
+        }
+
+        #result_wrapper {
+            width: 90vw;
+        }
+
+        #result_wrapper #imgbox {
+            width: 90vw;
+        }
+
+        #result_wrapper #imgbox img {
+            width: 90px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button id="btn" onclick="search()">
+            Search Now <span>&#128269</span>
+        </button>
+        <div class="wrapper" id="wrapper">
+            <div class="mainbox">
+                <div class="top">
+                    <b>Search Box By Karan Kushwaha</b>
+                    <b id="cross" onclick="off()"
+                        style="padding: 0.35rem; background-color: white; border-radius: 5px; cursor: pointer; ">&#x274c</b>
+                </div>
+                <div>
+                    <form class="down" onsubmit="find_roll_number()" action="#">
+                        <h5>Find your CBSE Roll Number</h5>
+                        <p>Your Name<span>*</span> -</p>
+                        <input type="text" id="name" placeholder="Your Name" required>
+                        <p>Father's Name<span>*</span> -</p>
+                        <input type="text" id="f_name" placeholder="Father's Name" required>
+                        <button type="submit">Search Now <span>&#128269</span></button>
+                        <div id="result_wrapper">
+                            <div id="imgbox">
+                                <img src="search.gif" alt="">
+                            </div>
+                            <div class="result">
+                                <p style="grid-area: hd;">Here is your Roll Number :-</p>
+                                <div id="roll_number"></div>
+                                <button type="button" onclick="clearFields()" class="clear">Clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function search() {
+            document.getElementById("wrapper").style.height = "100vh";
+        }
+        function off() {
+            document.getElementById("wrapper").style.height = "0vh";
+
+        }
+
+
+
+        // Define an array to store student information
+        const studentDatabase = [
+            { name: "Karan", fatherName: "Ajay", rollNumber: "CBSEKAAY" },
+            { name: "Arjun", fatherName: "Ajay", rollNumber: "CBSEARAY" },
+            // Add more students as needed
+            { name: "Amit Patel", fatherName: "Rajesh Patel", rollNumber: "CBSE001" },
+            { name: "Neha Sharma", fatherName: "Sunil Sharma", rollNumber: "CBSE002" },
+            { name: "Rahul Verma", fatherName: "Alok Verma", rollNumber: "CBSE003" },
+            { name: "Priya Yadav", fatherName: "Suresh Yadav", rollNumber: "CBSE004" },
+            { name: "Anjali Gupta", fatherName: "Vivek Gupta", rollNumber: "CBSE005" },
+            { name: "Vikram Singh", fatherName: "Rajendra Singh", rollNumber: "CBSE006" },
+            { name: "Sarita Mishra", fatherName: "Amit Mishra", rollNumber: "CBSE007" },
+            { name: "Ravi Tiwari", fatherName: "Sanjay Tiwari", rollNumber: "CBSE008" },
+            { name: "Pooja Reddy", fatherName: "Krishna Reddy", rollNumber: "CBSE009" },
+            { name: "Sanjay Kumar", fatherName: "Sudhir Kumar", rollNumber: "CBSE010" },
+            // Add more students...
+            { name: "Anita Singhania", fatherName: "Vijay Singhania", rollNumber: "CBSE041" },
+            { name: "Prakash Mehra", fatherName: "Arun Mehra", rollNumber: "CBSE042" },
+            { name: "Deepak Chatterjee", fatherName: "Rajesh Chatterjee", rollNumber: "CBSE043" },
+            { name: "Sunita Banerjee", fatherName: "Debashis Banerjee", rollNumber: "CBSE044" },
+            { name: "Rajeev Deshmukh", fatherName: "Amit Deshmukh", rollNumber: "CBSE045" },
+            { name: "Meena Agarwal", fatherName: "Ashok Agarwal", rollNumber: "CBSE046" },
+            { name: "Rajendra Iyer", fatherName: "Krishnan Iyer", rollNumber: "CBSE047" },
+            { name: "Divya Krishnan", fatherName: "Ramesh Krishnan", rollNumber: "CBSE048" },
+            { name: "Harish Sharma", fatherName: "Vinod Sharma", rollNumber: "CBSE049" },
+            { name: "Sneha Khanna", fatherName: "Ajay Khanna", rollNumber: "CBSE050" }
+            // Add more students as needed
+        ];
+        function find_roll_number() {
+            const name = document.getElementById("name").value.toLowerCase(); // Convert input to lowercase
+            const f_name = document.getElementById("f_name").value.toLowerCase(); // Convert input to lowercase
+
+            // Search for the student in the database, converting names to lowercase for comparison
+            const student = studentDatabase.find(student => {
+                return student.name.toLowerCase() === name && student.fatherName.toLowerCase() === f_name;
+            });
+
+            if (student) {
+                // If a student is found, display their roll number
+                document.getElementById("result_wrapper").style.visibility = "visible";
+                document.getElementById("roll_number").innerText = `Roll Number: ${student.rollNumber}`;
+            } else {
+                // If no matching student is found, display an error message
+                document.getElementById("result_wrapper").style.visibility = "visible";
+                document.getElementById("roll_number").innerText = "Student not found";
+            }
+
+
+
+            setTimeout(function () {
+                var elementToRemove = document.getElementById("imgbox");
+                elementToRemove.remove(); // This removes the element
+            }, 4000); // 3000 milliseconds = 3 seconds
+        }
+
+        function clearFields() {
+            // Clear the input fields
+            document.getElementById("name").value = "";
+            document.getElementById("f_name").value = "";
+
+            // Hide the result and reset the roll number
+            document.getElementById("result_wrapper").style.display = "none";
+            document.getElementById("roll_number").innerText = "";
+
+        }
+
+
+    </script>
+</body>
+
+</html>
